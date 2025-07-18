@@ -1,0 +1,25 @@
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客文章-{{ name }}</title>
+    <style>
+
+        h3 {
+            text-align: center;
+        }
+
+        p {
+            padding-left: 1ch;
+            padding-right: 1ch;
+        }
+
+    </style>
+</head>
+<body>
+    <h3>{{ name }}</h3>
+    <p>{{ writer }} #{{ time }}</p>
+    <p>{{ content.replace('\n', '<br>') | safe }}</p>
+    <p>阅读量：{{ volume }}</p>
+</body>
+</html>

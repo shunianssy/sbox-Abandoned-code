@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品投稿</title>
+    <style>
+        body {
+            background: #F0F4E9;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .form-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .form-title {
+            color: #2C3E50;
+            font-size: 28px;
+            border-bottom: 2px solid #A3D0C3;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        .form-label {
+            display: block;
+            color: #34495E;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E5E9F2;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        .form-control:focus {
+            border-color: #3498DB;
+            outline: none;
+        }
+        .textarea-control {
+            height: 200px;
+            resize: vertical;
+        }
+        .file-input {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            border: 2px dashed #A3D0C3;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .file-input:hover {
+            border-color: #3498DB;
+            background: #F8F9FA;
+        }
+        .submit-btn {
+            background: #3498DB;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        .submit-btn:hover {
+            background: #2980B9;
+            transform: translateY(-2px);
+        }
+        .tip {
+            color: #E74C3C;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        .converter-link {
+            color: #3498DB;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .converter-link:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 600px) {
+            .file-input {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-card">
+        <h1 class="form-title">作品投稿</h1>
+        
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label class="form-label" for="name">作品名称</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="jianjie">作品简介</label>
+                <textarea class="form-control textarea-control" id="jianjie" name="jianjie" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">上传文件</label>
+                <div class="file-input">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="#A3D0C3">
+                        <path d="M18 15v3H6v-3H4v3c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-3h-2zm-1-4l-1.41-1.41L13 12.17V4h-2v8.17L8.41 9.59 7 11l5 5 5-5z"/>
+                    </svg>
+                    <div>
+                        <p>将文件拖放到此处，或点击选择文件</p>
+                        <p class="tip">仅支持 .html 文件格式</p>
+                    </div>
+                    <input type="file" id="file" name="file" accept=".html" required style="display: none;">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <a href="https://packager.turbowarp.org/" class="converter-link" target="_blank">
+                    Scratch 转 HTML 转换工具
+                </a>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="submit-btn" value="立即投稿">
+            </div>
+
+            <p class="tip">
+                请遵守用户守则上传文件，目前仅允许上传Scratch转HTML作品和有意义的HTML程序，严禁重复上传作品，违者封号！
+            </p>
+        </form>
+    </div>
+
+    <script>
+        // 文件选择交互
+        document.querySelector('.file-input').addEventListener('click', () => {
+            document.getElementById('file').click();
+        });
+    </script>
+</body>
+</html>

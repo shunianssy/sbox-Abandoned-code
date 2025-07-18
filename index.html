@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小盒子社区</title>
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            padding-bottom: 50px; /* 给底部留出空间，避免内容遮挡页脚 */
+        }
+        /* 去掉a标签下划线 */
+        a {
+            text-decoration: none;
+            display: block; /* 让链接垂直排列 */
+            margin-bottom: 10px; /* 每个链接之间的间距 */
+        }
+        /* 导航栏样式 */
+        nav {
+            background-color: #333;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        /* 图标样式 */
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* 右侧下拉菜单样式 */
+        .dropdown {
+            position: relative;
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .dropdown-content {
+            display: none;
+            background-color: #333;
+            color: white;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            z-index: 1000;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #575757;
+        }
+
+        /* 打开下拉菜单 */
+        .dropdown.open .dropdown-content {
+            display: block;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 30px 40px; /* 垂直间距为30px，水平间距为40px */
+            padding: 20px;
+            justify-items: center;
+            max-width: 100%;
+            box-sizing: border-box;
+            margin: 0 auto;
+            padding-bottom: 70px; /* 防止卡片内容挡住页脚 */
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            position: relative; /* 使子元素可以使用绝对定位 */
+        }
+
+        .card h3 {
+            position: absolute;
+            bottom: 10px; /* 距离卡片底部10px */
+            left: 50%;
+            transform: translateX(-50%); /* 让标题水平居中 */
+            color: black;
+            margin: 0; /* 去掉默认的margin */
+            padding-bottom: 10px; /* 添加底部的间距 */
+        }
+
+        .card::before {
+            content: '';
+            display: block;
+            padding-top: 100%; /* 这个百分比会让高度等于宽度，从而保持正方形 */
+        }
+
+        .card img {
+            position: absolute; /* 使图片可以覆盖整个卡片 */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* 图片居中 */
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 8px;
+        }
+
+        /* 标题颜色修改为黑色 */
+        .card h2, h3 {
+            color: black; /* 设置h2和h3标签的标题颜色为黑色 */
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: repeat(3, 1fr); /* 屏幕较小的时候每行显示3个卡片 */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr); /* 屏幕更小时每行显示2个卡片 */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                grid-template-columns: 1fr; /* 屏幕最小时每行显示1个卡片 */
+            }
+        }
+
+        /* 页脚样式 */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            clear: both; /* 清除浮动 */
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="menu-icon">小盒子社区</div>
+        <div class="dropdown" onclick="toggleDropdown()">
+            ☰
+            <div class="dropdown-content">
+                <a href="">首页</a>
+                <a href="/user/{{ session['username'] }}">个人中心</a>
+                <a href="/tougaoscratch">投稿scratch</a>
+                <a href="{{ url_for('logout') }}">登出</a>
+                <a href="/users">用户更改</a>
+            </div>
+        </div>
+    </nav>
+    <h2>优秀作品喵~</h2>
+    <!-- 卡片展示区域 -->
+    <div class="container">
+        <a href="/scratch/{{ Excellent_scratch_1 }}" class="card">
+            <img src="/scratchphoto={{ Excellent_scratch_1 }}" alt="封面">
+            <h3>{{ Excellent_scratch_work_1 }}</h3>
+        </a>
+        <a href="/scratch/{{ Excellent_scratch_2 }}" class="card">
+            <img src="/scratchphoto={{ Excellent_scratch_2 }}" alt="封面">
+            <h3>{{ Excellent_scratch_work_2 }}</h3>
+        </a>
+        <a href="/scratch/{{ Excellent_scratch_3 }}" class="card">
+            <img src="/scratchphoto={{ Excellent_scratch_3 }}" alt="封面">
+            <h3>{{ Excellent_scratch_work_3 }}</h3>
+        </a>
+        <a href="/scratch/{{ Excellent_scratch_4 }}" class="card">
+            <img src="/scratchphoto={{ Excellent_scratch_4 }}" alt="封面">
+            <h3>{{ Excellent_scratch_work_4 }}</h3>
+        </a>
+        <a href="/scratch/{{ Excellent_scratch_5 }}" class="card">
+            <img src="/scratchphoto={{ Excellent_scratch_5 }}" alt="封面">
+            <h3>{{ Excellent_scratch_work_5 }}</h3>
+        </a>
+        <a href="/scratch/{{ Excellent_scratch_6 }}" class="card">
+            <img src="/scratchphoto={{ Excellent_scratch_6 }}" alt="封面">
+            <h3>{{ Excellent_scratch_work_6 }}</h3>
+        </a>
+    </div>
+    <h2>发现佳作喵~</h2>
+    <!-- 卡片展示区域 -->
+    <div class="container">
+        <a href="/scratch/{{ scid1 }}" class="card">
+            <img src="" alt="">
+            <h3>{{ zhuopin1 }}</h3>
+        </a>
+        <a href="/scratch/{{ scid2 }}" class="card">
+            <img src="" alt="">
+            <h3>{{ zhuopin2 }}</h3>
+        </a>
+        <a href="/scratch/{{ scid3 }}" class="card">
+            <img src="" alt="">
+            <h3>{{ zhuopin3 }}</h3>
+        </a>
+        <a href="/scratch/{{ scid4 }}" class="card">
+            <img src="" alt="">
+            <h3>{{ zhuopin4 }}</h3>
+        </a>
+        <a href="/scratch/{{ scid5 }}" class="card">
+            <img src="" alt="">
+            <h3>{{ zhuopin5 }}</h3>
+        </a>
+        <a href="/scratch/{{ scid6 }}" class="card">
+            <img src="" alt="">
+            <h3>{{ zhuopin6 }}</h3>
+        </a>
+        <a href="/scratch/{{ scid7 }}" class="card">
+            <img src="" alt="">
+            <h3>{{ zhuopin7 }}</h3>
+        </a>
+        <a href="/scratch/{{ scid8 }}" class="card">
+            <img src="" alt="">
+            <h3>{{ zhuopin8 }}</h3>
+        </a>
+        <a href="/scratch/{{ scid9 }}" class="card">
+            <img src="" alt="">
+            <h3>{{ zhuopin9 }}</h3>
+        </a>
+        <a href="/scratch/{{ scid10 }}" class="card">
+            <img src="" alt="">
+            <h3>{{ zhuopin10 }}</h3>
+        </a>
+        <a href="/scratch/{{ scid11 }}" class="card">
+            <img src="" alt="">
+            <h3>{{ zhuopin11 }}</h3>
+        </a>
+        <a href="/scratch/{{ scid12 }}" class="card">
+            <img src="" alt="">
+            <h3>{{ zhuopin12 }}</h3>
+        </a>
+    </div>
+    <!-- 页脚 -->
+    <p>   2025 小盒子社区</p>
+    <p>代理官方：<a href="https://space.bilibili.com/3493133419546943?spm_id_from=333.1296.0.0">   bilibili</a></p>
+    <p>QQ交流群：1037989684</p>
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.querySelector('.dropdown');
+            dropdown.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>

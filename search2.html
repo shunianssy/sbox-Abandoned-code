@@ -1,0 +1,23 @@
+<h1>作品搜索</h1>
+<form method="POST">
+    <input type="text" name="search_term" placeholder="输入搜索内容" required>
+    <input type="text" name="filter_term" placeholder="过滤条件 (可选)">
+    <button type="submit">搜索</button>
+</form>
+
+<h2>搜索结果</h2>
+<p>搜索时间: {{ time }}ms</p>
+{% if results %}
+    <ul>
+    {% for row in results %}
+        <li>
+            <a href="book/{{ row[0] }}">
+                <strong>作品:</strong> {{ row[1] }}<br>
+                <strong>ID:</strong> {{ row[0] }}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>没有找到匹配的作品。</p>
+{% endif %}

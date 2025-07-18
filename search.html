@@ -1,0 +1,184 @@
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品搜索</title>
+    <style>
+        body { //donvie.top
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        form {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        input[type="text"], select {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            flex: 1;
+            min-width: 200px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        label[for="selection"] {
+            color: #2c3e50;
+            font-weight: 500;
+            white-space: nowrap;
+            margin-right: 5px;
+        }
+
+        button[type="submit"] {
+            padding: 12px 25px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin: 30px 0 15px;
+        }
+
+        #search-time {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        #results-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        #results-list li {
+            background-color: white;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        #results-list li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        #results-list a {
+            text-decoration: none;
+            color: #3498db;
+        }
+
+        #results-list a:hover {
+            color: #2980b9;
+        }
+
+        #results-list strong {
+            color: #2c3e50;
+        }
+
+        #results-list p {
+            text-align: center;
+            padding: 40px;
+            background-color: white;
+            border-radius: 6px;
+            color: #7f8c8d;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>作品搜索</h1>
+    <form id="search-form">
+        <input type="text" id="search-term" name="search_term" placeholder="输入搜索内容" required>
+        <input type="text" id="filter-term" name="filter_term" placeholder="过滤条件 (可选)">
+        <label for="selection">选择:</label>
+        <select name="selection" id="selection">
+            <option value="scratch">scratch</option>
+            <option value="book">book</option>
+            <option value="snly">snly</option>
+        </select>
+        <button type="submit">搜索</button>
+    </form>
+
+
+    <h2>搜索结果</h2>
+    <p id="search-time"></p>
+    <ul id="results-list"></ul>
+
+    <script>
+    document.getElementById('search-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        let searchTerm = document.getElementById('search-term').value;
+        let filterTerm = document.getElementById('filter-term').value;
+        let selection = document.getElementById('selection').value;
+        
+        fetch('/api/search', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                search_term: searchTerm,
+                filter_term: filterTerm,
+                selection: selection
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('search-time').textContent = `搜索时间: ${data.elapsed_time}ms`;
+            
+            const resultsList = document.getElementById('results-list');
+            resultsList.innerHTML = '';  // 清空之前的结果
+
+            if (data.results.length > 0) {
+                data.results.forEach(row => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `<a href="${selection}/${row.id}"><strong>作品:</strong> ${row.content}<br><strong>ID:</strong> ${row.id}</a>`;
+                    resultsList.appendChild(listItem);
+                });
+            } else {
+                resultsList.innerHTML = '<p>没有找到匹配的作品</p>';
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    </script>
+</body>
+</html>

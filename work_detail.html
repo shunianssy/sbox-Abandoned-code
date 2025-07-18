@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小盒子 - {{filename}}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 主容器 */
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        /* 标题样式 */
+        h1 {
+            font-size: 2em;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        /* 作者信息 */
+        .author-info {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .author-info a {
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .author-info a:hover {
+            text-decoration: underline;
+        }
+
+        /* iframe 样式 */
+        iframe {
+            width: 100%;
+            max-width: 800px;
+            height: 450px;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 返回链接 */
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            font-size: 1.1em;
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* 响应式布局 */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+
+            iframe {
+                width: 100%;
+                max-width: 100%;
+                height: 300px;
+            }
+        }
+
+        /* 新增样式: 用于处理文本换行 */
+        .jianjie {
+            white-space: pre-line; /* 允许换行 */
+            text-align: left; /* 确保不居中 */
+            font-size: 1em;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{filename}}</h1>
+        <div class="author-info">
+            
+            <p>作者：<a href="{{url}}">{{username}}</a></p> <p>观看量：{{ gk }}</p> 
+        </div>
+        <iframe src="{{caz}}" width="600" height="400"></iframe><br>
+        <p><a href="/scratchgood={{ id }}">点赞:{{ good }}</a> <a href="/scratchstar={{ id }}">收藏:{{ star }}</a> {{ a|safe }}</p>
+        <div class="jianjie">{{ jianjie | safe }}</div>
+    </div>
+    <div class="container">
+        <h1>评论区</h1>
+        
+        <form method="POST" onsubmit="disableSubmit()">
+            <input type="hidden" name="token" value="{{ token }}">
+            <input type="text" name="Comment" required>
+            <button id="submitBtn" type="submit">提交</button>
+        </form>
+        
+
+        <ul style="text-align: left">
+        {% for item in Comment %}
+            <li>{{ item }}</li>
+        {% endfor %}
+        </ul>
+
+
+    </div>
+</body>
+</html>
